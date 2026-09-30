@@ -1,0 +1,19 @@
+[project]
+name = "web-nutri"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Bladysitoo", email = "bladysitoo@icloud.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.1.1",
+]
+
+[project.scripts]
+web-nutri = "web_nutri:main"
+
+[build-system]
+requires = ["uv_build>=0.12.21,<0.13.0"]
+build-backend = "uv_build"

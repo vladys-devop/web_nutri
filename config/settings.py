@@ -138,3 +138,4 @@ AUTH_USER_MODEL = 'cuentas.User'
 
 LOGIN_URL='login'
 LOGIN_REDIRECT_URL='inicio'
+LOGOUT_REDIRECT_URL='login'

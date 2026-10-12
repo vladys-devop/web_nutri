@@ -85,11 +85,11 @@ class Visita(models.Model):
     def __str__(self):
         return f"{self.cliente} - Sessió:{self.numero} ({self.fecha:%d/%m/%Y})"
 
-    def save(self,*args,**kawrgs):
+    def save(self,*args,**kwargs):
         if self.pk is None:
-            ultimo = self.cliente.visita.aggregate(Max("numero"))["numero_max"]
+            ultimo = self.cliente.visitas.aggregate(Max("numero"))["numero__max"]
             self.numero = (ultimo or 0) + 1 
-        super().save(*args,**kawrgs)
+        super().save(*args,**kwargs)
 
     @property
     def edad_cliente(self):

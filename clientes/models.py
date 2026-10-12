@@ -28,12 +28,12 @@ class Cliente(models.Model):
     # PROTECCIÓN DE DATOS
 
     activo=models.BooleanField("Actiu", default=True)
-    consentimieto_rgpd=models.BooleanField("Consentiment RGPD signat",default=False)
+    consentimiento_rgpd=models.BooleanField("Consentiment RGPD signat",default=False)
     fecha_consentimiento=models.DateField("Data del consentiment",null=True,blank=True)
 
     # CONTROL
     creado=models.DateTimeField(auto_now_add=True)
-    actualizado=models.DateTimeField(auto_now_add=True)
+    actualizado=models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering=["apellidos","nombre"]
@@ -97,7 +97,7 @@ class Visita(models.Model):
         return self.cliente.edad_en(self.fecha)
 
     @property
-    def visitga_anterior(self):
+    def visita_anterior(self):
         return(
             self.cliente.visitas
             .filter(numero__lt=self.numero)
@@ -134,10 +134,41 @@ class CalidadSueno(models.TextChoices):
 
 class CicloMenstrual(models.TextChoices):
     REGULAR="regular","Regular"
-    IRREGUALR="irregular","Irregular"
+    IRREGULAR="irregular","Irregular"
     ABUNDANTE="abundante","Abundant"
     ESCASO="escaso","Escàs"
     NO_APLICA="no_aplica","No aplica"
+
+class FrecuenciaDeporte(models.TextChoices):
+    DIARIO="diario","Diàriament"
+    UNO_DOS="1-2","1-2 dies/setmana"
+    TRES_CUATRO="3-4","3-4 dies/setmana"
+    ESPORADICO="esporadico","Esport esporàdic"
+    SEDENTARIO="sedentario","Sedentari"
+
+class MomentoDia(models.TextChoices):
+    MANANA="mañana","Matí"
+    MEDIODIA="mediodia","Migdia"
+    TARDE="tarde","Tarda"
+    NOCHE="noche","Nit"
+
+class ObjetivoEntrenamiento(models.TextChoices):
+    MANTENIMIENTO="mantenimiento","Manteniment del pes"
+    PERDIDA="perdida","Pèrdua de pes/ greix corporal"
+    MASA_MUSCULAR="masa_muscular","Augment de massa muscular"
+    RENDIMIENTO="rendimiento","Millora de rendiment esportiu"
+    HABITOS="habitos","Millora d'hàbits"
+    PATOLOGIA="patologia","Control de patologia"
+    COMPOSICION="composicion","Millora de la composició corporal"
+    RECUPERACION="recuperacion","Recuperació després de lesió/cirurgia"
+    OTROS="otros","Altres"
+
+class TipoTrabajo(models.TextChoices):
+    SEDENTARIO="sedentario","Sedentari"
+    ACTIVO="activo","actiu"
+    MUY_ACTIVO="muy_activo","Molt actiu"
+    FISICO_INTENSO="fisico_intenso","Físic intens"
+    NOCTURNO="nocturno","Torn nocturn"
 
 class DetallePrimeraVisita(models.Model):
     visita = models.OneToOneField(
@@ -152,7 +183,7 @@ class DetallePrimeraVisita(models.Model):
         help_text="Què t'ha portat a la consulta?",
     )
 
-    tiempo_problema=models.TextField("Quant de temps amb el problema?", max_length=200,blank=True)
+    tiempo_problema=models.CharField("Quant de temps amb el problema?", max_length=200,blank=True)
     intentos_previos=models.TextField(
         "Ha fet alguna cosa abans per solucionar-ho?", blank=True,
         help_text="Dieta? Va funcionar?",
@@ -189,7 +220,7 @@ class DetallePrimeraVisita(models.Model):
         choices=HabitoDeposicional.choices,blank=True
     )
 
-    frequencia_deposicional=models.CharField("Freqüència deposicional",max_length=100,blank=True)
+    frecuencia_deposicional=models.CharField("Freqüència deposicional",max_length=100,blank=True)
 
     horas_sueno=models.CharField(
         "Hores de son", max_length=10,
@@ -212,9 +243,56 @@ class DetallePrimeraVisita(models.Model):
         choices=CicloMenstrual.choices,blank=True,
     )
 
+    # ACTIVIDAD FÍSICA Y ESTILO DE VIDA
+
+    deporte_tipo=models.CharField("Esport (tipus)",max_length=200,blank=True)
+    deporte_frecuencia=models.CharField(
+        "Freqüència",max_length=20,
+        choices=FrecuenciaDeporte.choices,blank=True,
+    )
+
+    deporte_duracion=models.PositiveSmallIntegerField(
+        "Durada mitjana de la sessió (min)", null=True,blank=True,
+    )
+
+    deporte_momento=models.CharField(
+        "Moment del dia en què entrena", max_length=20,
+        choices=MomentoDia.choices,blank=True,
+    )
+
+    deporte_objetivo=models.CharField(
+        "Objectiu de l'entrenament",max_length=20,
+        choices=ObjetivoEntrenamiento.choices,blank=True,
+    )
+
+    trabajo_tipo=models.CharField(
+        "Tipus de treball",max_length=20,
+        choices=TipoTrabajo.choices,blank=True,
+    )
+
+    trabajo_horario=models.CharField("Horari laboral",max_length=200,blank=True)
+
+    # HISTORIAL DE PESO
+
+    peso_habitual=models.DecimalField(
+        "Pes habitual(kg)",max_digits=5,decimal_places=1,
+        null=True,blank=True,
+    )
+
+    variaciones_peso=models.TextField("Variacions de pes",blank=True)
+    causas_variacion=models.TextField("Causes de variació",blank=True)
+    observaciones_visuales=models.TextField("Observacions visuals",blank=True)
+
+    
     class Meta:
         verbose_name="detall de primera visita"
         verbose_name_plural="detalls de primera visita"
 
     def __str__(self):
         return f"Primera visita - {self.visita.cliente}"
+
+
+
+
+
+

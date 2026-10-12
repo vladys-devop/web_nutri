@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cliente,Visita
+from .models import Cliente,Visita,DetallePrimeraVisita
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
@@ -11,3 +11,7 @@ class ClienteAdmin(admin.ModelAdmin):
 class VisitaAdmin(admin.ModelAdmin):
     list_display=["cliente","numero","tipo","fecha","edad_cliente"]
     list_filter=["tipo"]
+
+admin.site.register(DetallePrimeraVisita)
+
+

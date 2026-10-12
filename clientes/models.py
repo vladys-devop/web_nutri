@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from datetime import *
 from django.db.models import Max
+from django.core.validators import MaxValueValidator,MinValueValidator
 
 class Cliente(models.Model):
     class Sexo(models.TextChoices):
@@ -104,4 +105,116 @@ class Visita(models.Model):
             .first()
         )
 
+class Tabaco(models.TextChoices):
+    NO="no","No"
+    OCASIONAL="ocasional","Sí, ocasionalment"
+    DIARIO="diario","Sí,diàriament"
 
+class Alcohol(models.TextChoices):
+    NO="no","No"
+    OCASIONAL="ocasional","Ocasionalment"
+    SEMANAL="semanal","Setmanalment"
+    DIARIO="diario","Diàriament"
+
+class HabitoDeposicional(models.TextChoices):
+    REGULAR="regular","Regular"
+    ESTRENIMIENTO="estrenimiento","Restrenyiment"
+    DIARREA="diarrea","Diarrea"
+    IRREGULAR="irregular","Irregular"
+
+class HorasSueno(models.TextChoices):
+    MENOS_6="<6","<6"
+    ENTRE_6_8="6-8","6-8"
+    MAS_8=">8",">8"
+
+class CalidadSueno(models.TextChoices):
+    BUENA="buena","Bona"
+    REGULAR="regular","Regular"
+    MALA="mala","Dolenta"
+
+class CicloMenstrual(models.TextChoices):
+    REGULAR="regular","Regular"
+    IRREGUALR="irregular","Irregular"
+    ABUNDANTE="abundante","Abundant"
+    ESCASO="escaso","Escàs"
+    NO_APLICA="no_aplica","No aplica"
+
+class DetallePrimeraVisita(models.Model):
+    visita = models.OneToOneField(
+        Visita,
+        on_delete=models.CASCADE,
+        related_name="detalle_primera"
+    )
+
+    # MOTIVO DE LA CONSULTA
+    motivo_principal = models.TextField(
+        "Motiu principal",blank=True,
+        help_text="Què t'ha portat a la consulta?",
+    )
+
+    tiempo_problema=models.TextField("Quant de temps amb el problema?", max_length=200,blank=True)
+    intentos_previos=models.TextField(
+        "Ha fet alguna cosa abans per solucionar-ho?", blank=True,
+        help_text="Dieta? Va funcionar?",
+    )
+
+    expectativas=models.TextField("Què espera aconseguir? Expectatives", blank=True)
+    preocupacion_actual=models.TextField("Què li preocupa més ara mateix?", blank=True)
+
+    # HISTORIAL MÉDICO Y ANTECEDENTES
+
+    patologias=models.TextField("Patologies diagnosticades",blank=True)
+    alergias=models.TextField("Al·lèrgies o intoleràncies",blank=True)
+    antecedentes_familiares=models.TextField("Antecedents familiars",blank=True)
+    analitica_reciente=models.TextField("Analítica recent",blank=True)
+
+    # HABITOS TOXICOS
+
+    tabaco=models.CharField("Tabac",max_length=200,choices=Tabaco.choices, blank=True)
+    alcohol=models.CharField("Alcohol",max_length=200,choices=Alcohol.choices,blank=True)
+    medicacion=models.TextField(
+        "Medicació actual", blank=True,
+        help_text="Nom, dosi, horari",
+    )
+
+    suplementacion=models.TextField(
+        "Suplementació",blank=True,
+        help_text="Tipus, dosi y freqüència, motiu pel qual ho pren, efecte percebut",
+        )
+
+    # OTROS ASPECTOS DE LA SALUD
+
+    habito_deposicional=models.CharField(
+        "Hàbit deposicional",max_length=20,
+        choices=HabitoDeposicional.choices,blank=True
+    )
+
+    frequencia_deposicional=models.CharField("Freqüència deposicional",max_length=100,blank=True)
+
+    horas_sueno=models.CharField(
+        "Hores de son", max_length=10,
+        choices=HorasSueno.choices,blank=True,
+    )
+
+    calidad_sueno=models.CharField(
+        "Qualitat del son",max_length=20,
+        choices=CalidadSueno.choices,blank=True,
+        help_text="Descansa bé?",
+    )
+
+    estres=models.PositiveSmallIntegerField(
+        "Estrès percebut (1-10)",null=True,blank=True,
+        validators=[MinValueValidator(1),MaxValueValidator(10)],
+    )
+
+    ciclo_menstrual=models.CharField(
+        "Cicle menstrual",max_length=20,
+        choices=CicloMenstrual.choices,blank=True,
+    )
+
+    class Meta:
+        verbose_name="detall de primera visita"
+        verbose_name_plural="detalls de primera visita"
+
+    def __str__(self):
+        return f"Primera visita - {self.visita.cliente}"

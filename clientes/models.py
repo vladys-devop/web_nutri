@@ -7,9 +7,9 @@ from django.core.validators import MaxValueValidator,MinValueValidator
 
 class Cliente(models.Model):
     class Sexo(models.TextChoices):
-        MUJER = "M", "Mujer",
-        HOMBRE = "H", "Hombre",
-        OTRO = "O", "Otro"
+        MUJER = "M", "Dona",
+        HOMBRE = "H", "Home",
+        OTRO = "O", "Altres"
 
     nutricionista = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -59,7 +59,7 @@ class Cliente(models.Model):
 class Visita(models.Model):
     class Tipo(models.TextChoices):
         PRIMERA="P", "Primera visita"
-        SEGUIMIENTO="S","Vista de seguiment"
+        SEGUIMIENTO="S","Visita de seguiment"
 
     cliente = models.ForeignKey(
         Cliente,
@@ -68,7 +68,7 @@ class Visita(models.Model):
     )
 
     tipo=models.CharField("Tipus", max_length=1,choices=Tipo.choices)
-    numero=models.PositiveSmallIntegerField("Número de de sessió",editable=False)
+    numero=models.PositiveSmallIntegerField("Número de sessió",editable=False)
     fecha=models.DateField("Data de la visita",default=date.today)
     proxima_visita=models.DateField("Propera visita",null=True,blank=True)
 
@@ -108,7 +108,7 @@ class Visita(models.Model):
 class Tabaco(models.TextChoices):
     NO="no","No"
     OCASIONAL="ocasional","Sí, ocasionalment"
-    DIARIO="diario","Sí,diàriament"
+    DIARIO="diario","Sí, diàriament"
 
 class Alcohol(models.TextChoices):
     NO="no","No"
@@ -123,9 +123,9 @@ class HabitoDeposicional(models.TextChoices):
     IRREGULAR="irregular","Irregular"
 
 class HorasSueno(models.TextChoices):
-    MENOS_6="<6","<6"
-    ENTRE_6_8="6-8","6-8"
-    MAS_8=">8",">8"
+    MENOS_6="<6","<6h"
+    ENTRE_6_8="6-8","6-8h"
+    MAS_8=">8",">8h"
 
 class CalidadSueno(models.TextChoices):
     BUENA="buena","Bona"
@@ -147,7 +147,7 @@ class FrecuenciaDeporte(models.TextChoices):
     SEDENTARIO="sedentario","Sedentari"
 
 class MomentoDia(models.TextChoices):
-    MANANA="mañana","Matí"
+    MANANA="manana","Matí"
     MEDIODIA="mediodia","Migdia"
     TARDE="tarde","Tarda"
     NOCHE="noche","Nit"
@@ -165,7 +165,7 @@ class ObjetivoEntrenamiento(models.TextChoices):
 
 class TipoTrabajo(models.TextChoices):
     SEDENTARIO="sedentario","Sedentari"
-    ACTIVO="activo","actiu"
+    ACTIVO="activo","Actiu"
     MUY_ACTIVO="muy_activo","Molt actiu"
     FISICO_INTENSO="fisico_intenso","Físic intens"
     NOCTURNO="nocturno","Torn nocturn"
@@ -275,7 +275,7 @@ class DetallePrimeraVisita(models.Model):
     # HISTORIAL DE PESO
 
     peso_habitual=models.DecimalField(
-        "Pes habitual(kg)",max_digits=5,decimal_places=1,
+        "Pes habitual (kg)",max_digits=5,decimal_places=1,
         null=True,blank=True,
     )
 

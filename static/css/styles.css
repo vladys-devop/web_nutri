@@ -1,0 +1,109 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #f5f6f4;
+    color: #222;
+}
+
+/* --- Estructura con barra lateral --- */
+
+.app {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+}
+
+.lateral {
+    background: #2f5d50;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 12px;
+}
+
+.marca {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding: 0 8px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.usuario {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 12px;
+    font-size: 0.9rem;
+}
+
+.usuario button {
+    margin-top: 8px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.contenido {
+    padding: 30px;
+}
+
+/* --- Páginas sin sesión (login) --- */
+
+.contenido-solo {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+}
+
+.contenido-solo h1 {
+    margin-top: 0;
+}
+
+.contenido-solo form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contenido-solo input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.contenido-solo button {
+    margin-top: 12px;
+    padding: 10px;
+    background: #2f5d50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}

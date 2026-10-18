@@ -1,20 +1,23 @@
 {% extends "base.html" %}
 
-{% block titulo%}{{ cliente.nombre_completo }}{% endblock %}
+{% block titulo %}{{ cliente.nombre_completo }}{% endblock %}
 
 {% block contenido %}
-<a href="{% url 'cliente_lista' %}" class="volver">Tornar als clients</a>
+<a href="{% url 'cliente_lista' %}" class="volver">← Tornar als clients</a>
 
 <div class="ficha-cabecera">
-    <h1>{{ cliente.nombre_completo }}</h1>
+    <div class="cabecera-pagina">
+        <h1>{{ cliente.nombre_completo }}</h1>
+        <a href="{% url 'cliente_editar' cliente.pk %}" class="boton">Editar</a>
+    </div>
     <p class="ficha-datos">
-        {{cliente.edad }} anys - {{ cliente.get_sexo_display}}
-        {% if cliente.telefono %} - {{ cliente.telefono }}{% endif %}
-        {% if cliente.email %} - {{ cliente.email }}{% endif %}
+        {{ cliente.edad }} anys · {{ cliente.get_sexo_display }}
+        {% if cliente.telefono %} · {{ cliente.telefono }}{% endif %}
+        {% if cliente.email %} · {{ cliente.email }}{% endif %}
     </p>
     <p class="ficha-datos">
         Data de naixement: {{ cliente.fecha_nacimiento|date:"d/m/Y" }}
-        - RGPD: {% if cliente.consentimiento_rgpd %}Sí{% else %}<strong>Falta</strong>{% endif %}
+        · RGPD: {% if cliente.consentimiento_rgpd %}Sí{% else %}<strong>Falta</strong>{% endif %}
     </p>
 </div>
 
@@ -45,4 +48,3 @@
     </tbody>
 </table>
 {% endblock %}
-            

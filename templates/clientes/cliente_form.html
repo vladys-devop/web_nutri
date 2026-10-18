@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
-{% block titulo %}Nou client{% endblock %}
+{% block titulo %}{% if cliente %}Editar client{% else %}Nou client{% endif %}{% endblock %}
 
 {% block contenido %}
-<a href="{% url 'cliente_lista' %}" class="volver">Tornar als clients</a>
 
-<h1>Nou Client</h1>
+{% if cliente %}
+    <a href="{% url 'cliente_detalle' cliente.pk %}" class="volver">← Tornar a la fitxa</a>
+    <h1>Editar {{ cliente.nombre_completo }}</h1>
+{% else %}
+    <a href="{% url 'cliente_lista' %}" class="volver">← Tornar als clients</a>
+    <h1>Nou client</h1>
+{% endif %}
 
 <form method="post" class="formulario">
     {% csrf_token %}

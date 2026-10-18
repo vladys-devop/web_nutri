@@ -47,3 +47,20 @@ def cliente_nuevo(request):
         form = ClienteForm()
 
     return render(request, "clientes/cliente_form.html", {"form": form})
+
+@login_required
+def cliente_editar(request, pk):
+    cliente = get_object_or_404(request.user.clientes, pk=pk)
+
+    if request.method == "POST":
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect("cliente_detalle", pk= cliente.pk)
+    else: 
+        form = ClienteForm(instance=cliente)
+
+    return render(request, "clientes/cliente_form.html", {
+        "form" : form,
+        "cliente" : cliente,
+    })

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q 
 
@@ -23,4 +23,12 @@ def cliente_lista(request):
     return render(request, "clientes/lista.html", {
         "clientes" : clientes,
         "q" : q, 
+    })
+
+@login_required
+def cliente_detalle(request, pk):
+    cliente = get_object_or_404(request.user.clientes, pk=pk)
+
+    return render(request, "clientes/detalle.html", {
+        "cliente" : cliente,
     })

@@ -14,7 +14,7 @@
             <div class="marca">Consulta</div>
             <nav class="menu">
                 <a href="{% url 'inicio' %}">Inici</a>
-                <a href="#">Clients</a>
+                <a href="{% url 'cliente_lista' %}">Clients</a>
                 <a href="#">Agenda</a>
                 <a href="#">Aliments</a>
                 <a href="#">Dietes</a>
@@ -23,8 +23,7 @@
                 <span>{{ user.get_full_name|default:user.username}}</span>
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit">Sortir</b
-                        utton>
+                    <button type="submit">Sortir</button>
                 </form>
             </div>
         </aside>

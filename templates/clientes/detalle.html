@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block titulo%}{{ cliente.nombre_completo }}{% endblock %}
+
+{% block contenido %}
+<a href="{% url 'cliente_lista' %}" class="volver">Tornar als clients</a>
+
+<div class="ficha-cabecera">
+    <h1>{{ cliente.nombre_completo }}</h1>
+    <p class="ficha-datos">
+        {{cliente.edad }} anys - {{ cliente.get_sexo_display}}
+        {% if cliente.telefono %} - {{ cliente.telefono }}{% endif %}
+        {% if cliente.email %} - {{ cliente.email }}{% endif %}
+    </p>
+    <p class="ficha-datos">
+        Data de naixement: {{ cliente.fecha_nacimiento|date:"d/m/Y" }}
+        - RGPD: {% if cliente.consentimiento_rgpd %}Sí{% else %}<strong>Falta</strong>{% endif %}
+    </p>
+</div>
+
+<h2>Visites</h2>
+
+<table class="tabla">
+    <thead>
+        <tr>
+            <th>Sessió</th>
+            <th>Data</th>
+            <th>Tipus</th>
+            <th>Edat</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for visita in cliente.visitas.all %}
+        <tr>
+            <td>{{ visita.numero }}</td>
+            <td>{{ visita.fecha|date:"d/m/Y" }}</td>
+            <td>{{ visita.get_tipo_display }}</td>
+            <td>{{ visita.edad_cliente }} anys</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Encara no hi ha visites.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+            

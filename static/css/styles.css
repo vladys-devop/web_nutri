@@ -107,3 +107,83 @@ body {
     font-size: 1rem;
     cursor: pointer;
 }
+
+/* lista de clientes */
+
+.buscador{
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.buscador input{
+    flex: 1;
+    max_width: 400px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.buscador button{
+    padding: 8px 16px;
+    background: #2f5d50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 8px;
+    overflow: hidden;
+}
+
+.tabla th,
+.tabla td{
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.tabla th{
+    background: #eef2ef;
+    font-weight: 600;
+}
+
+.tabla tbody tr:hover{
+    background: #f8faf8;
+}
+
+/* ficha cliente */
+
+.volver {
+    color: #2f5d50;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.ficha-cabecera{
+    background: white;
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin: 12px 0 30 px;
+}
+
+.ficha-cabecera h1{
+    margin: 0 0 8px;
+}
+
+.ficha-datos{
+    margin: 4px 0;
+    color: #555;
+}
+
+.tabla a{
+    color:#2f5d50;
+    font-weight: 600;
+    text-decoration: none;
+}

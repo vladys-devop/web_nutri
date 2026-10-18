@@ -6,7 +6,7 @@
 <h1>Clients</h1>
 
 <form method="get" class="buscador">
-    <input type="search" name="q" value="{{ q }}" placeholder="Cerca per nom, cognos o telèfon">
+    <input type="search" name="q" value="{{ q }}" placeholder="Cerca per nom, cognoms o telèfon">
     <button type="submit">Cercar</button>
 </form>
 
@@ -23,16 +23,17 @@
     <tbody>
         {% for cliente in clientes %}
         <tr>
-            <td>{{ cliente.apellidos}}, {{cliente.nombre}}</td>
+            <td><a href="{% url 'cliente_detalle' cliente.pk %}">{{ cliente.apellidos }}, {{ cliente.nombre }}</a></td>
             <td>{{ cliente.edad }}</td>
             <td>{{ cliente.get_sexo_display }}</td>
             <td> {{ cliente.telefono|default:"-"}}</td>
-            <td>{% if cliente.consenitmiento_rgpd%}Sí{% else %}<strong>Falta</strong>{% endif %}</td>
+            <td>{% if cliente.consentimiento_rgpd %}Sí{% else %}<strong>Falta</strong>{% endif %}</td>
         </tr>
         {% empty %}
         <tr>
             <td colspan="5">
                 {% if q %}Cap client coincideix amb :{{ q }}.{% else %}Encara no hi ha clients.{% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>

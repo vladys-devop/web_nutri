@@ -3,7 +3,10 @@
 {% block titulo %}Clients{% endblock %}
 
 {% block contenido %}
-<h1>Clients</h1>
+<div class="cabecera-pagina">
+    <h1>Clients</h1>
+    <a href="{% url 'cliente_nuevo' %}"class="boton">Nou Client</a>
+</div>
 
 <form method="get" class="buscador">
     <input type="search" name="q" value="{{ q }}" placeholder="Cerca per nom, cognoms o telèfon">

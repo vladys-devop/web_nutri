@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required 
-from django.db.models import Q 
+from django.db.models import Q
+from .forms import ClienteForm
 
 
 
@@ -32,3 +33,17 @@ def cliente_detalle(request, pk):
     return render(request, "clientes/detalle.html", {
         "cliente" : cliente,
     })
+
+@login_required
+def cliente_nuevo(request):
+    if request.method == "POST":
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            cliente = form.save(commit=False)
+            cliente.nutricionista = request.user
+            cliente.save()
+            return redirect("cliente_detalle", pk=cliente.pk)
+    else:
+        form = ClienteForm()
+
+    return render(request, "clientes/cliente_form.html", {"form": form})

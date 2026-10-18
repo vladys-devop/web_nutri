@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo %}Nou client{% endblock %}
+
+{% block contenido %}
+<a href="{% url 'cliente_lista' %}" class="volver">Tornar als clients</a>
+
+<h1>Nou Client</h1>
+
+<form method="post" class="formulario">
+    {% csrf_token %}
+
+    {% for campo in form %}
+    <div class="campo">
+        <label for="{{ campo.id_for_label }}">
+            {{ campo.label }}{% if campo.field.required %} *{% endif %}
+        </label>
+        {{ campo }}
+        {% if campo.help_text %}
+            <small class="ayuda">{{ campo.help_text }}</small>
+        {% endif %}
+        {% for error in campo.errors %}
+            <small class="error">{{ error }}</small>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <button type="submit">Desar</button>
+</form>
+{% endblock %}

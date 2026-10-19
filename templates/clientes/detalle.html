@@ -23,6 +23,10 @@
 
 <h2>Visites</h2>
 
+{% if not cliente.tiene_primera_visita %}
+<p><a href="{% url 'primera_visita' cliente.pk %}" class="boton">Primera visita</a></p>
+{% endif %}
+
 <table class="tabla">
     <thead>
         <tr>

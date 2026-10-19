@@ -97,6 +97,10 @@ class Visita(models.Model):
         return self.cliente.edad_en(self.fecha)
 
     @property
+    def tiene_primera_visita(self):
+        return self.visitas.filter(tipo=Visita.Tipo.PRIMERA).exists()
+
+    @property
     def visita_anterior(self):
         return(
             self.cliente.visitas

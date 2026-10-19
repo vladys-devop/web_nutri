@@ -255,3 +255,21 @@ body {
     font-size: 1rem;
     cursor: pointer;
 }
+
+/* formulario primera visita */
+.formulario fieldset {
+    border:  1px solid #e0e4e0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 0 0 24px;
+}
+
+.formulario legend {
+    font-weight: 700;
+    color: #2f5d50;
+    padding: 0 8px;
+}
+.formulario textarea {
+    min-height: 80px;
+    resize: vertical;
+}

@@ -7,4 +7,5 @@ urlpatterns = [
     path("nou/", views.cliente_nuevo, name="cliente_nuevo"),
     path("<int:pk>/", views.cliente_detalle, name="cliente_detalle"),
     path("<int:pk>/editar/", views.cliente_editar, name="cliente_editar"),
+    path("<int:pk>/primera-visita/", views.primera_visita, name="primera_visita"),
 ]

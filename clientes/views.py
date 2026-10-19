@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q
-from .forms import ClienteForm
+from django.db import transaction
+from .forms import ClienteForm, PrimeraVisitaForm
+from .models import Visita
 
 
 
@@ -61,6 +63,33 @@ def cliente_editar(request, pk):
         form = ClienteForm(instance=cliente)
 
     return render(request, "clientes/cliente_form.html", {
+        "form" : form,
+        "cliente" : cliente,
+    })
+
+@login_required
+def primera_visita(request,pk):
+    cliente = get_object_or_404(request.user.clientes,pk=pk)
+
+    if cliente.visitas.filter(tipo=Visita.Tipo.PRIMERA).exists():
+        return redirect("cliente_detalle", pk=cliente.pk)
+
+    if request.method == "POST":
+        form = PrimeraVisitaForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                visita= Visita.objects.create(
+                    cliente=cliente,
+                    tipo=Visita.Tipo.PRIMERA,
+                )
+                detalle = form.save(commit=False)
+                detalle.visita = visita
+                detalle.save()
+            return redirect("cliente_detalle", pk=cliente.pk)
+    else:
+        form = PrimeraVisitaForm()
+
+    return render(request,"clientes/primera_visita.html", {
         "form" : form,
         "cliente" : cliente,
     })
